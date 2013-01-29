@@ -36,7 +36,6 @@ Scrubber.prototype.startY = null;
 Scrubber.prototype.next = null;
 Scrubber.prototype.previous = null;
 
-
 Scrubber.prototype.handle = function(x, y, event, force) {
 	if (x && x.originalEvent) {
 		event = x
