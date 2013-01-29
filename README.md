@@ -1,10 +1,10 @@
-=== Scrubber
+### Scrubber
 
 I developed three projects for refinery29 (pipeline, corporate, slideshow) and each of them involved some scrolling/touch interactions. Slideshow was the hardest, because it combined gestures in two axis with some customization. Mobile carousel is powered by the same code, but has its own behavior (doesnt lock vertical scrolling, while locking horizontal movements).
 
 Scrubbing is a name for a technique that plays animation in real time according to pointer movements. For example scrolling is a form of scrubbing. The concept is simple and usually easy to implement. But there're multiple gotchas that make up for that simplicity:
 
-=== Why
+### Why
 
 (Jump to code examples: https://gist.github.com/4657637)
 
@@ -32,7 +32,7 @@ Again, using a standalone library for gesture inputs makes developer do all the 
 
 So I know exactly what is a good solution to the problem. Following is a proposed API: 
 
-=== Example
+### Example
 
 	// Scrubber: Animate stuff based on touch input. 
 	// Customize scrubbers, set limits, handle stuff dynamically
@@ -116,6 +116,6 @@ So I know exactly what is a good solution to the problem. Following is a propose
 So here I'm asking to do this stuff at work part-time. It'll help us a lot in future and also a good thing to release as open source.
 
 
-=== Inspiration
+### Inspiration
 
 https://docs.google.com/document/d/1vRUo_g1il-evZs975eNzGPOuJS7H5UBxs-iZmXHux48/edit CSS3 animation scrubbing proposal. Doesnt really help us with anything, but it makes a point that the problem exists and may have a good declarative solution.
