@@ -33,81 +33,81 @@ Again, using a standalone library for gesture inputs makes developer do all the 
 So I know exactly what is a good solution to the problem. Following is a proposed API: 
 
 ### Example
-
-	// Scrubber: Animate stuff based on touch input. 
-	// Customize scrubbers, set limits, handle stuff dynamically
-	// Combine scrubbers together
-	 
-	var SlideOut = Scrubber({
-	  // start only after 15px of movement
-	  thresholdY: 15,
-		// a callback called on each frame to render the change
-		setY: function(y) {
-			this.element.marginTop = y + 'px';
-		},
-		// set a dynamic limit for gesture
-		maxY: function() {
-			return this.element.offsetHeight;
-		},
-		// prevent going under 0
-		minY: 0
-	});
-	var ScrollY = Scrubber({
-		setY: function(y) {
-			this.element.scrollTop = y;
-		},
-		maxY: function() {
-			return this.element.scrollHeight - this.element.offsetHeight;
-		},
-		minY: 0
-	});
-	 
-	 
-	// combine two scrubbers, returns a new scrubber
-	SlideScroll = SlideOut.concat(ScrollY);
-	 
-	// set options for a combinator scrubber 
-	// these options can be applied to each scrubber separately
-	SlideScroll.setOptions({
-		// find element dynamically
-		// we dont need to add scrubber for every scrollable element
-		// instead we use one and check if pointer was on one of the elements
-		// if it was not, we just 
-		element: function(event) {
-			for (var node = event.target; node; node = node.parentNode) {
-				if (node.className == 'caption')
-					return node;
-			}
-		},
-		// only handles vertical movements
-		axis: 'y',
-		// ignore horizontal movements 
-		lock: true
-	});
-	 
-	// use hammer to capture pointer events
-	hammer.ondragstart = function(event) {
-		// handle movement, may return false 
-		// (e.g. if movement was not in specific area)
-		// all intermediate values are stored in a returned object
-		hammer.scrubber = SlideScroll(event);
-	 
-	}
-	 
-	hammer.ondrag = function(event) {
-		// update scrubber with new values
-		if (hammer.scrubber) 
-			hammer.scrubber.set(event)
-	};
-	 
-	hammer.ondragend = function(event) {
-		// finish scrubber
-		if (hammer.scrubber) {
-			hammer.scrubber.finish(event)
-			delete hammer.scrubber;
+```javascript
+// Scrubber: Animate stuff based on touch input. 
+// Customize scrubbers, set limits, handle stuff dynamically
+// Combine scrubbers together
+ 
+var SlideOut = Scrubber({
+  // start only after 15px of movement
+  thresholdY: 15,
+	// a callback called on each frame to render the change
+	setY: function(y) {
+		this.element.marginTop = y + 'px';
+	},
+	// set a dynamic limit for gesture
+	maxY: function() {
+		return this.element.offsetHeight;
+	},
+	// prevent going under 0
+	minY: 0
+});
+var ScrollY = Scrubber({
+	setY: function(y) {
+		this.element.scrollTop = y;
+	},
+	maxY: function() {
+		return this.element.scrollHeight - this.element.offsetHeight;
+	},
+	minY: 0
+});
+ 
+ 
+// combine two scrubbers, returns a new scrubber
+SlideScroll = SlideOut.concat(ScrollY);
+ 
+// set options for a combinator scrubber 
+// these options can be applied to each scrubber separately
+SlideScroll.setOptions({
+	// find element dynamically
+	// we dont need to add scrubber for every scrollable element
+	// instead we use one and check if pointer was on one of the elements
+	// if it was not, we just 
+	element: function(event) {
+		for (var node = event.target; node; node = node.parentNode) {
+			if (node.className == 'caption')
+				return node;
 		}
+	},
+	// only handles vertical movements
+	axis: 'y',
+	// ignore horizontal movements 
+	lock: true
+});
+ 
+// use hammer to capture pointer events
+hammer.ondragstart = function(event) {
+	// handle movement, may return false 
+	// (e.g. if movement was not in specific area)
+	// all intermediate values are stored in a returned object
+	hammer.scrubber = SlideScroll(event);
+ 
+}
+ 
+hammer.ondrag = function(event) {
+	// update scrubber with new values
+	if (hammer.scrubber) 
+		hammer.scrubber.set(event)
+};
+ 
+hammer.ondragend = function(event) {
+	// finish scrubber
+	if (hammer.scrubber) {
+		hammer.scrubber.finish(event)
+		delete hammer.scrubber;
 	}
-
+}
+```
 1) It allows creating a single scrubber for multiple elements 
 2) It allows to calculate scrubbing limits dynamically 
 3) It allows combining two or more scrubbers 
